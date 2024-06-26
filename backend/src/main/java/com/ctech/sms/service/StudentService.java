@@ -26,7 +26,7 @@ public class StudentService {
         if (!optionalStudent.isEmpty())
             return optionalStudent;
         else
-            throw new StudentNotFoundException(String.format("Student with id %s does not exist", String.valueOf(id)));
+            throw new StudentNotFoundException(String.format("Student with id %d does not exist", id));
     }
 
     public List<Student> getStudentByNic(String nic) throws StudentNotFoundException{
@@ -46,7 +46,7 @@ public class StudentService {
             throw new StudentAlreadyExist("Student already exists...");
 
         } else{
-            Student saveStudent = studentRepo.save(student);
+            studentRepo.save(student);
             log.info("Successfully added {}", student.getFullName());
         }
 
@@ -54,8 +54,7 @@ public class StudentService {
 
 
     //updating student details
-    public void updateStudent(Student student) throws StudentNotFoundException {
-        int studentId = student.getStudentID();
+    public void updateStudent(Integer studentId ,Student student) throws StudentNotFoundException {
         Optional<Student> optionalStudent = studentRepo.findById(studentId);
         if (optionalStudent.isPresent()){
             Student currentStudent = optionalStudent.get();
@@ -88,7 +87,7 @@ public class StudentService {
             }
 
             studentRepo.save(currentStudent);
-            log.info("Student with id {} successfully update", student.getStudentID());
+            log.info("Student with id {} successfully update", studentId);
         }
 
         else{

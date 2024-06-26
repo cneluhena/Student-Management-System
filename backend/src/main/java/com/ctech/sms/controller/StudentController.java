@@ -29,13 +29,11 @@ public class StudentController {
     }
 
 
-
-
     @PutMapping("/update")
-    public ResponseEntity<String> updateStudent(@RequestBody Student student){
+    public ResponseEntity<String> updateStudent(@RequestParam Integer id, @RequestBody Student student){
         try{
-            studentService.updateStudent(student);
-            return ResponseEntity.ok().body(String.format("Student %s is updated", student.getStudentID()));
+            studentService.updateStudent(id, student);
+            return ResponseEntity.ok().body(String.format("Student %d is updated", id));
         } catch (StudentNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -45,7 +43,7 @@ public class StudentController {
     @GetMapping("/find")
     public ResponseEntity<?> getStudent (
             @RequestParam(name="id", required = false) Integer Id,
-            @RequestParam(name="nic", required = false) String nic) throws StudentNotFoundException {
+            @RequestParam(name="nic", required = false) String nic) {
         try {
             if (Id != null)
                 return ResponseEntity.ok().body(studentService.getStudentById(Id));
@@ -60,7 +58,7 @@ public class StudentController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getStudent (
-            @RequestParam(name="id", required = true) Integer Id) throws StudentNotFoundException{
+            @RequestParam(name="id", required = true) Integer Id){
         try {
             if (Id != null)
                 return ResponseEntity.ok().body(studentService.getStudentById(Id));
@@ -71,7 +69,6 @@ public class StudentController {
         }
 
     }
-
 
     }
 
