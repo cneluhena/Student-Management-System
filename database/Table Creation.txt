@@ -1,0 +1,26 @@
+CREATE TABLE Teachers (
+    teacher_id SERIAL PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    phone_number VARCHAR(20),
+    nic VARCHAR(15)
+);
+
+CREATE TABLE Courses (
+    course_id SERIAL PRIMARY KEY,
+    course_name VARCHAR(255) NOT NULL,
+    grade VARCHAR(10),
+    teacher_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
+);
+
+
+CREATE TABLE Enrollments (
+    enrollment_id SERIAL PRIMARY KEY,
+    studentid INT,
+    course_id INT,
+    enrollment_date DATE,
+    FOREIGN KEY (studentid) REFERENCES student(studentid),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+
