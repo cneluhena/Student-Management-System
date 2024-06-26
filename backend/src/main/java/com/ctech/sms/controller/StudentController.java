@@ -45,7 +45,7 @@ public class StudentController {
     @GetMapping("/find")
     public ResponseEntity<?> getStudent (
             @RequestParam(name="id", required = false) Integer Id,
-            @RequestParam(name="nic", required = false) String nic) throws StudentNotFoundException{
+            @RequestParam(name="nic", required = false) String nic) throws StudentNotFoundException {
         try {
             if (Id != null)
                 return ResponseEntity.ok().body(studentService.getStudentById(Id));
@@ -56,6 +56,22 @@ public class StudentController {
         } catch (StudentNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getStudent (
+            @RequestParam(name="id", required = true) Integer Id) throws StudentNotFoundException{
+        try {
+            if (Id != null)
+                return ResponseEntity.ok().body(studentService.getStudentById(Id));
+            else
+                throw new StudentNotFoundException("Error");
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+    }
 
 
-    }}
+    }
+

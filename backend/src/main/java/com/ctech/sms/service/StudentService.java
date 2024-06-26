@@ -5,14 +5,11 @@ import com.ctech.sms.Errors.StudentAlreadyExist;
 import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.entity.Student;
 import com.ctech.sms.repository.StudentRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,10 +96,6 @@ public class StudentService {
             throw new StudentNotFoundException(String.format("Student with ID %s not found", studentId));
         }
     }
-
-
-
-
 
 
 }

@@ -37,9 +37,12 @@ import { ChevronDownIcon, Search2Icon, WarningIcon } from "@chakra-ui/icons";
 import { RefObject, useRef, useState } from "react";
 import axios from "axios";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const StudentSearch = () => {
+
+  const navigate = useNavigate();  //navigator
   const [buttonName, setButtonName] = useState("Select Search Type"); //show the text inside the dropdown button
   const [searchType, setSearchType] = useState(""); //the type of search that the user wants to do(student_id, nic, name)
   const [responseData, setResponseData] = useState([] as any[]); //store the response data from the server
@@ -149,8 +152,9 @@ const StudentSearch = () => {
         </Flex>
       </Container>
 
+
       <TableContainer>
-        <Table variant="simple">
+       { isAvailable  && <Table variant="simple">
           <Thead>
             <Tr>
               <Th>Student ID</Th>
@@ -158,23 +162,24 @@ const StudentSearch = () => {
               <Th>NIC</Th>
             </Tr>
             
-            
             </Thead>
-            {isAvailable &&
+            { 
               responseData.map((data, index) => {
                 return (
                   <Tr key={index}>
                     <Td>{data.student_id}</Td>
                     <Td>{data.full_name}</Td>
                     <Td>{data.nic}</Td>
+                    <Td><Button onClick={()=>navigate(`/profile/${data.student_id}`)}>View</Button></Td>
                   </Tr>
                 );
               })}
           
-        </Table>
+        </Table>}
       </TableContainer>
-
       <Container >
+
+
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
