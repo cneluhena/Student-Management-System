@@ -3,6 +3,8 @@ package com.ctech.sms.controller;
 
 import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.Errors.TeacherNotFoundException;
+import com.ctech.sms.entity.Student;
+import com.ctech.sms.entity.Teacher;
 import com.ctech.sms.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,5 +33,17 @@ public class TeacherController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateTeacher(@RequestParam int id, @RequestBody Teacher teacher){
+        try{
+            teacherService.updateTeacher(id, teacher);
+            return ResponseEntity.ok().body(String.format("Teacher %s is updated", id));
+        } catch (TeacherNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+    }
+
 
 }

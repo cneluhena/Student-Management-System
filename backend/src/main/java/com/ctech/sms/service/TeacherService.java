@@ -1,14 +1,15 @@
 package com.ctech.sms.service;
 
 
+import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.Errors.TeacherNotFoundException;
-import com.ctech.sms.entity.Teachers;
+import com.ctech.sms.entity.Student;
+import com.ctech.sms.entity.Teacher;
 import com.ctech.sms.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,8 +20,8 @@ public class TeacherService {
 
 
     //getting teacher by teacherID(not NIC)
-    public Teachers findTeacherById(Integer id) throws TeacherNotFoundException {
-        Optional<Teachers> optionalTeacher = teacherRepo.findById(id);
+    public Teacher findTeacherById(Integer id) throws TeacherNotFoundException {
+        Optional<Teacher> optionalTeacher = teacherRepo.findById(id);
         if (optionalTeacher.isEmpty()){
             throw new TeacherNotFoundException("Teacher not Found");
         } else{
@@ -31,8 +32,8 @@ public class TeacherService {
 
 
     //getting teacher details by teacher nic
-    public Teachers findTeacherByNic(String nic) throws TeacherNotFoundException{
-        Optional<Teachers> optionalTeacher = teacherRepo.findByNic(nic);
+    public Teacher findTeacherByNic(String nic) throws TeacherNotFoundException{
+        Optional<Teacher> optionalTeacher = teacherRepo.findByNic(nic);
         if (optionalTeacher.isEmpty()){
             throw new TeacherNotFoundException("Teacher not found!");
         } else{
@@ -40,6 +41,33 @@ public class TeacherService {
         }
 
     }
+
+    //updating teacher record
+    public void updateTeacher(Integer teacherID, Teacher teacher) throws TeacherNotFoundException {
+        Optional<Teacher> optionalTeacher = teacherRepo.findById(teacherID);
+        if (optionalTeacher.isPresent()){
+            Teacher currentTeacher = optionalTeacher.get();
+            if (teacher.getFullName() != null)
+                currentTeacher.setFullName(teacher.getFullName());
+
+            if (teacher.getNic() != null)
+                currentTeacher.setNic(teacher.getNic());
+
+            if (teacher.getEmail() != null)
+                currentTeacher.setEmail(teacher.getEmail());
+
+            if (teacher.getPhoneNumber()!=null)
+                currentTeacher.setPhoneNumber(teacher.getPhoneNumber());
+            teacherRepo.save(currentTeacher);
+            log.info("Teacher {} successfully update", teacher.getTeacherID());
+        }
+
+        else{
+            log.info("Teacher with id {} not found", teacherID);
+            throw new TeacherNotFoundException(String.format("Teacher with ID %d not found", teacherID));
+        }
+    }
+
 
 
 
