@@ -59,15 +59,15 @@ public class StudentController {
     @GetMapping("/profile")
     public ResponseEntity<?> getStudent (
             @RequestParam(name="id") Integer Id){
+
+
         try {
-            if (Id != null)
-                return ResponseEntity.ok().body(studentService.getStudentById(Id));
-            else
-                throw new StudentNotFoundException("Error");
+            return ResponseEntity.ok().body(studentService.getStudentById(Id));
         } catch (StudentNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
-
     }
 
     }
