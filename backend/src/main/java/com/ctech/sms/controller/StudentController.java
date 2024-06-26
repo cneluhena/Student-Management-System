@@ -58,7 +58,7 @@ public class StudentController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getStudent (
-            @RequestParam(name="id", required = true) Integer Id){
+            @RequestParam(name="id") Integer Id){
         try {
             if (Id != null)
                 return ResponseEntity.ok().body(studentService.getStudentById(Id));
