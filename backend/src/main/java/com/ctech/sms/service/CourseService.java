@@ -1,6 +1,6 @@
 package com.ctech.sms.service;
 
-import com.ctech.sms.Errors.CourseNotFound;
+import com.ctech.sms.Errors.CourseNotFoundException;
 import com.ctech.sms.Errors.StudentAlreadyExist;
 import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.entity.Course;
@@ -21,23 +21,8 @@ public class CourseService {
 
     private final CourseRepository courseRepo;
 
-    public List<Course> getStudentById(Integer id) throws StudentNotFoundException {
-        List<Student> optionalStudent = studentRepo.findBystudentID(id);
-        if (!optionalStudent.isEmpty())
-            return optionalStudent;
-        else
-            throw new StudentNotFoundException(String.format("Student with id %d does not exist", id));
-    }
 
-    public List<Student> getStudentByNic(String nic) throws StudentNotFoundException{
-        List<Student> studentList = studentRepo.findAllByNIC(nic);
-        if (!studentList.isEmpty())
-            return  studentList;
-        else{
-            throw new StudentNotFoundException(String.format("Student with nic %s does not exist", nic));
-        }
 
-    }
 
     //adding a course to the database
     public void addCourse(Course course) throws StudentAlreadyExist {
@@ -47,11 +32,12 @@ public class CourseService {
     }
 
     //updating student details
-    public void updateCourse(String courseId ,Course course) throws CourseNotFound {
+    public void updateCourse(String courseId ,Course course) throws CourseNotFoundException {
         Optional<Course> optionalCourse = courseRepo.findById(courseId);
         if (optionalCourse.isPresent()){
             Course currentCourse = optionalCourse.get();
             if (course.getCourseName() != null){
+                currentCourse.setCourseName(course.getCourseName());
                 currentCourse.setCourseName(course.getCourseName());
             }
 
@@ -63,12 +49,16 @@ public class CourseService {
                 currentCourse.setDay(course.getDay());
             }
 
-            if (course.getTime() != null){
-                currentCourse.setTime(course.getTime());
+            if (course.getStartTime() != null){
+                currentCourse.setStartTime(course.getStartTime());
             }
 
             if (course.getTeacherID() != null){
                 currentCourse.setTeacherID(course.getTeacherID());
+            }
+
+            if (course.getMedium() != null){
+                currentCourse.setMedium(course.getMedium());
             }
 
 
@@ -78,7 +68,7 @@ public class CourseService {
 
         else{
             log.info("Student with id {} not found", course.getCourseID());
-            throw new CourseNotFoundException(String.format("Student with ID %s not found", ));
+            throw new CourseNotFoundException(String.format("Course with ID %s not found", course.getCourseID()));
         }
     }
 

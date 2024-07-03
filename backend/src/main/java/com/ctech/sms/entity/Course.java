@@ -19,7 +19,8 @@ public class Course {
     private String courseName;
     private String grade;
     private Integer teacherID;
-    private Time time;
+    private String medium;
+    private DayOfWeek day;
     private LocalTime startTime;
     private LocalTime endTime;
 
