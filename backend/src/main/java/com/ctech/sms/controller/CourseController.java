@@ -2,7 +2,6 @@ package com.ctech.sms.controller;
 
 import com.ctech.sms.Errors.CourseNotFoundException;
 
-import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.entity.Course;
 
 import com.ctech.sms.service.CourseService;
