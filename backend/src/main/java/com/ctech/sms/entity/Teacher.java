@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Teacher {
     @Id
     @Column(name="teacher_id")
-    private int teacherID;
+    private Integer teacherID;
 
     @Column(name="full_name")
     private String fullName;
