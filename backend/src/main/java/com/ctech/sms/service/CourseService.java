@@ -1,16 +1,15 @@
 package com.ctech.sms.service;
 
 import com.ctech.sms.Errors.CourseNotFoundException;
-import com.ctech.sms.Errors.StudentAlreadyExist;
-import com.ctech.sms.Errors.StudentNotFoundException;
+
 import com.ctech.sms.entity.Course;
-import com.ctech.sms.entity.Student;
+
 import com.ctech.sms.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 

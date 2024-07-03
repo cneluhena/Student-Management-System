@@ -1,8 +1,6 @@
 package com.ctech.sms.entity;
 
 
-
-import com.ctech.sms.Helper.Time;
 import jakarta.persistence.Table;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
