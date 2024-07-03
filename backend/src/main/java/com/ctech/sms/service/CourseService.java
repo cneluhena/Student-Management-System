@@ -25,15 +25,20 @@ public class CourseService {
 
 
     //adding a course to the database
-    public void addCourse(Course course) throws StudentAlreadyExist {
+    public void addCourse(Course course){
+        try{
             courseRepo.save(course);
             log.info("Successfully added {}", course.getCourseName());
+        } catch (Exception e){
+            log.info("Error Occurred");
+        }
+
 
     }
 
     //updating student details
-    public void updateCourse(String courseId ,Course course) throws CourseNotFoundException {
-        Optional<Course> optionalCourse = courseRepo.findById(courseId);
+    public void updateCourse(Integer courseId ,Course course) throws CourseNotFoundException {
+        Optional<Course> optionalCourse = courseRepo.findById(Integer.toString(courseId));
         if (optionalCourse.isPresent()){
             Course currentCourse = optionalCourse.get();
             if (course.getCourseName() != null){

@@ -15,7 +15,7 @@ import java.time.LocalTime;
 public class Course {
 
     @Id
-    private String courseID;
+    private Integer courseID;
     private String courseName;
     private String grade;
     private Integer teacherID;
