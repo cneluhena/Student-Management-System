@@ -9,8 +9,12 @@ CREATE TABLE Teachers (
 CREATE TABLE Courses (
     course_id SERIAL PRIMARY KEY,
     course_name VARCHAR(255) NOT NULL,
-    grade VARCHAR(10),
+    grade VARCHAR(20),
     teacher_id INT,
+	medium VARCHAR(20),
+	day VARCHAR(15),
+	start_time TIME,
+	end_time TIME,
     FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
 );
 
