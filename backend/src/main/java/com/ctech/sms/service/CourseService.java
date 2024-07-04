@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+import java.time.DayOfWeek;
 import java.util.Optional;
 
 
@@ -21,18 +22,14 @@ public class CourseService {
     private final CourseRepository courseRepo;
 
 
-
-
     //adding a course to the database
-    public void addCourse(Course course){
+    public void addCourse(Course course) throws Exception{
         try{
             courseRepo.save(course);
             log.info("Successfully added {}", course.getCourseName());
         } catch (Exception e){
-            log.info("Error Occurred");
+            throw new Exception("Error when adding course");
         }
-
-
     }
 
     //updating student details
@@ -41,7 +38,6 @@ public class CourseService {
         if (optionalCourse.isPresent()){
             Course currentCourse = optionalCourse.get();
             if (course.getCourseName() != null){
-                currentCourse.setCourseName(course.getCourseName());
                 currentCourse.setCourseName(course.getCourseName());
             }
 
