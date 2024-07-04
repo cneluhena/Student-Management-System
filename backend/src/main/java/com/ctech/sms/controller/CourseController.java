@@ -30,10 +30,10 @@ public class CourseController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateCourse(@RequestParam Integer courseId, @RequestBody Course course){
+    public ResponseEntity<String> updateCourse(@RequestParam Integer id, @RequestBody Course course){
         try{
-            courseService.updateCourse(courseId, course);
-            return ResponseEntity.ok().body(String.format("course %d is updated", courseId));
+            courseService.updateCourse(id, course);
+            return ResponseEntity.ok().body(String.format("course %d is updated", id));
         } catch (CourseNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
