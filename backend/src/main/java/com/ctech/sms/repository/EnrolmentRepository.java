@@ -11,7 +11,7 @@ public interface EnrolmentRepository extends JpaRepository<Enrollment, Integer> 
 
     @Query(
             nativeQuery = true,
-            value= "Select * FROM enrolments WHERE studentid=?1")
+            value= "Select * FROM enrollments WHERE student_id=?1")
     List<Enrollment> isStudentEnrolled(Integer studentID);
 
 
