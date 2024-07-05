@@ -1,30 +1,40 @@
+CREATE TABLE Students (
+    student_id SERIAL PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    birth_date DATE,
+    nic VARCHAR(20),
+    guardian_name VARCHAR(255),
+    guardian_phone_number VARCHAR(20)
+);
+
 CREATE TABLE Teachers (
     teacher_id SERIAL PRIMARY KEY,
     full_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255),
+    email VARCHAR(100),
     phone_number VARCHAR(20),
-    nic VARCHAR(15)
+    nic VARCHAR(20)
 );
+
 
 CREATE TABLE Courses (
     course_id SERIAL PRIMARY KEY,
     course_name VARCHAR(255) NOT NULL,
-    grade VARCHAR(20),
-    teacher_id INT,
-	medium VARCHAR(20),
-	day VARCHAR(15),
-	start_time TIME,
-	end_time TIME,
-    FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
+    grade VARCHAR(15),
+    teacher_id INTEGER,
+    medium VARCHAR(50),
+    day VARCHAR(20),
+    start_time TIME,
+    end_time TIME,
+	FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
 );
+
 
 
 CREATE TABLE Enrollments (
-    enrollment_id SERIAL PRIMARY KEY,
-    studentid INT,
-    course_id INT,
-    enrollment_date DATE,
-    FOREIGN KEY (studentid) REFERENCES student(studentid),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    enrolment_id SERIAL PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER,
+    enrolled_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
-
