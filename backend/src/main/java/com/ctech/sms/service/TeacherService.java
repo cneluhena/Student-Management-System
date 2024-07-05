@@ -1,7 +1,9 @@
 package com.ctech.sms.service;
 
 
+import com.ctech.sms.Errors.StudentAlreadyExist;
 import com.ctech.sms.Errors.StudentNotFoundException;
+import com.ctech.sms.Errors.TeacherAlreadyExist;
 import com.ctech.sms.Errors.TeacherNotFoundException;
 import com.ctech.sms.entity.Student;
 import com.ctech.sms.entity.Teacher;
@@ -18,6 +20,20 @@ import java.util.Optional;
 public class TeacherService {
     private final TeacherRepository teacherRepo;
 
+
+    public void addTeacher(Teacher teacher) throws TeacherAlreadyExist {
+
+        Optional<Teacher> optionalStudent = teacherRepo.findByNic(teacher.getNic());
+        if (optionalStudent.isPresent()){
+            log.info("Teacher already exists..");
+            throw new TeacherAlreadyExist("Teacher already exist..");
+
+        } else{
+            teacherRepo.save(teacher);
+            log.info("Successfully added ...  {}",teacher.getFullName());
+        }
+
+    }
 
     //getting teacher by teacherID(not NIC)
     public Teacher findTeacherById(Integer id) throws TeacherNotFoundException {
@@ -43,8 +59,8 @@ public class TeacherService {
     }
 
     //updating teacher record
-    public void updateTeacher(Integer teacherID, Teacher teacher) throws TeacherNotFoundException {
-        Optional<Teacher> optionalTeacher = teacherRepo.findById(teacherID);
+    public void updateTeacher(Integer teacherId, Teacher teacher) throws TeacherNotFoundException {
+        Optional<Teacher> optionalTeacher = teacherRepo.findById(teacherId);
         if (optionalTeacher.isPresent()){
             Teacher currentTeacher = optionalTeacher.get();
             if (teacher.getFullName() != null)
@@ -59,12 +75,12 @@ public class TeacherService {
             if (teacher.getPhoneNumber()!=null)
                 currentTeacher.setPhoneNumber(teacher.getPhoneNumber());
             teacherRepo.save(currentTeacher);
-            log.info("Teacher {} successfully update", teacher.getTeacherID());
+            log.info("Teacher {} successfully updated", teacherId);
         }
 
         else{
-            log.info("Teacher with id {} not found", teacherID);
-            throw new TeacherNotFoundException(String.format("Teacher with ID %d not found", teacherID));
+            log.info("Teacher with id {} not found", teacherId);
+            throw new TeacherNotFoundException(String.format("Teacher with ID %d not found", teacherId));
         }
     }
 
