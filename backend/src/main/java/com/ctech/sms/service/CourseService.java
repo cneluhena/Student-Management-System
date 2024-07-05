@@ -8,6 +8,8 @@ import com.ctech.sms.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -32,7 +34,7 @@ public class CourseService {
 
     //updating student details
     public void updateCourse(Integer courseId ,Course course) throws CourseNotFoundException {
-        Optional<Course> optionalCourse = courseRepo.findById(Integer.toString(courseId));
+        Optional<Course> optionalCourse = courseRepo.findById(courseId);
         if (optionalCourse.isPresent()){
             Course currentCourse = optionalCourse.get();
             if (course.getCourseName() != null){
@@ -51,8 +53,8 @@ public class CourseService {
                 currentCourse.setStartTime(course.getStartTime());
             }
 
-            if (course.getTeacherID() != null){
-                currentCourse.setTeacherID(course.getTeacherID());
+            if (course.getTeacherId() != null){
+                currentCourse.setTeacherId(course.getTeacherId());
             }
 
             if (course.getMedium() != null){
@@ -61,14 +63,15 @@ public class CourseService {
 
 
             courseRepo.save(currentCourse);
-            log.info("Course with id {} successfully updated", currentCourse.getCourseID());
+            log.info("Course with id {} successfully updated", currentCourse.getCourseId());
         }
 
         else{
-            log.info("Student with id {} not found", course.getCourseID());
-            throw new CourseNotFoundException(String.format("Course with ID %s not found", course.getCourseID()));
+            log.info("Student with id {} not found", course.getCourseId());
+            throw new CourseNotFoundException(String.format("Course with ID %s not found", course.getCourseId()));
         }
     }
+
 
 
 }
