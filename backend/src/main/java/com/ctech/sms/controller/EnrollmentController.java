@@ -18,18 +18,29 @@ public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 
 
-    @PostMapping("/enroll")
+    @PostMapping("/add")
     public ResponseEntity<String> enrollStudent(@RequestBody Enrollment enrollment){
         try{
             enrollmentService.enrollStudent(enrollment);
             return ResponseEntity.ok().body("Student Enrolled successfully");
-        } catch(StudentAlreadyEnrolled se){
+        } catch(Exception se){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(se.getMessage());
         }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error occured enrolling");
+
+
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> enrollStudent(@RequestParam Integer id){
+        try{
+            enrollmentService.unEnroll(id);
+            return ResponseEntity.ok().body("Student unenrolled successfully");
+        } catch(Exception se){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(se.getMessage());
         }
 
     }
+
+
 
 }

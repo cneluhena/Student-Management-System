@@ -40,34 +40,6 @@ public class CourseController {
 
     }
 
-//    @GetMapping("/find")
-//    public ResponseEntity<?> getStudent (
-//            @RequestParam(name="id", required = false) Integer Id,
-//            @RequestParam(name="nic", required = false) String nic) {
-//        try {
-//            if (Id != null)
-//                return ResponseEntity.ok().body(studentService.getStudentById(Id));
-//            else if (nic != null)
-//                return ResponseEntity.ok().body(studentService.getStudentByNic(nic));
-//            else
-//                throw new StudentNotFoundException("Error");
-//        } catch (StudentNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
-//    }
-//
-//    @GetMapping("/profile")
-//    public ResponseEntity<?> getStudent (
-//            @RequestParam(name="id") Integer Id){
-//
-//
-//        try {
-//            return ResponseEntity.ok().body(studentService.getStudentById(Id));
-//        } catch (StudentNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
-//        }
-//    }
+
 
 }

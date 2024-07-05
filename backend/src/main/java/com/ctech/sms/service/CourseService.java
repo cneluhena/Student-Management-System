@@ -67,7 +67,7 @@ public class CourseService {
         }
 
         else{
-            log.info("Student with id {} not found", course.getCourseId());
+            log.info("Course with id {} not found", course.getCourseId());
             throw new CourseNotFoundException(String.format("Course with ID %s not found", course.getCourseId()));
         }
     }
