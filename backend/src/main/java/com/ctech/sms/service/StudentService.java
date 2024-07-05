@@ -21,7 +21,7 @@ public class StudentService {
     private final StudentRepository studentRepo;
 
     public List<Student> getStudentById(Integer id) throws StudentNotFoundException{
-        List<Student> optionalStudent = studentRepo.findBystudentID(id);
+        List<Student> optionalStudent = studentRepo.findBystudentId(id);
         if (!optionalStudent.isEmpty())
             return optionalStudent;
         else
@@ -39,14 +39,14 @@ public class StudentService {
     }
 
     public void addStudent(Student student) throws StudentAlreadyExist {
-        Optional<Student> optionalStudent = studentRepo.findById(student.getStudentID());
+        Optional<Student> optionalStudent = studentRepo.findById(student.getStudentId());
         if (optionalStudent.isPresent()){
-            log.info("Student already exists...");
+            log.info("Student already exists..");
             throw new StudentAlreadyExist("Student already exists...");
 
         } else{
             studentRepo.save(student);
-            log.info("Successfully added {}", student.getFullName());
+            log.info("Successfully added ...  {}", student.getFullName());
         }
 
     }
@@ -69,21 +69,15 @@ public class StudentService {
                 currentStudent.setNIC(student.getNIC());
             }
 
-            if (student.getFatherName() != null){
-                currentStudent.setFatherName(student.getFatherName());
+            if (student.getGuardianName() != null){
+                currentStudent.setGuardianName(student.getGuardianName());
             }
 
-            if (student.getMotherName() != null){
-                currentStudent.setMotherName(student.getMotherName());
+
+            if (student.getGuardianPhoneNumber() != null){
+                currentStudent.setGuardianPhoneNumber(student.getGuardianPhoneNumber());;
             }
 
-            if (student.getFatherPhoneNumber() != null){
-                currentStudent.setFatherPhoneNumber(student.getFatherPhoneNumber());
-            }
-
-            if (student.getMotherPhoneNumber() != null){
-                currentStudent.setMotherPhoneNumber(student.getMotherPhoneNumber());
-            }
 
             studentRepo.save(currentStudent);
             log.info("Student with id {} successfully update", studentId);

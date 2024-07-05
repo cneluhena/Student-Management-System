@@ -1,9 +1,7 @@
 package com.ctech.sms.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,19 +10,31 @@ import java.time.LocalDate;
 
 
 
-@Table(name="student")
+@Table(name="students")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Student {
     @Id
-    private int studentID;
+    @Column(name="student_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int studentId;
+
+    @Column(name="full_name")
     private String fullName;
+
+    @Column(name="birth_date")
     private LocalDate birthDate;
+
+    @Column(name="nic")
     private String NIC;
-    private String fatherName;
-    private String motherName;
-    private String fatherPhoneNumber;
-    private String motherPhoneNumber;
+
+    @Column(name="guardian_name")
+    private String guardianName;
+
+
+    @Column(name="guardian_phone_number")
+    private String guardianPhoneNumber;
+
 }

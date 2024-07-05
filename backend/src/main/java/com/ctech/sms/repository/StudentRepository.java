@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     List<Student> findAllByNIC(String nic);
-    List<Student> findBystudentID(Integer id);
+    List<Student> findBystudentId(Integer id);
 
-    Student findByMotherName(String nic);
+
 
 }

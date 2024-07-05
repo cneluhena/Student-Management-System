@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
     private final StudentService studentService;
 
-    @PostMapping("/")
+    @PostMapping("/add")
     public ResponseEntity<String> addStudent(@RequestBody Student student){
         try{
             studentService.addStudent(student);
@@ -50,7 +50,7 @@ public class StudentController {
             else if (nic != null)
                 return ResponseEntity.ok().body(studentService.getStudentByNic(nic));
             else
-                throw new StudentNotFoundException("Error");
+                throw new StudentNotFoundException("Student Not Found");
         } catch (StudentNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -60,7 +60,6 @@ public class StudentController {
     public ResponseEntity<?> getStudent (
             @RequestParam(name="id") Integer Id){
 
-
         try {
             return ResponseEntity.ok().body(studentService.getStudentById(Id));
         } catch (StudentNotFoundException e) {
@@ -69,6 +68,5 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
     }
-
     }
 
