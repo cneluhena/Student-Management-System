@@ -79,8 +79,13 @@ public class CourseService {
         return courseRepo.getCoursesByGrade();
     }
 
-    public List<TeacherDTO> getTeachersOfCourse(String course_name, String grade){
-        return courseRepo.getTeachersId(course_name, grade);
+
+    public List<TeacherDTO> getCourses(String course_name, String grade) throws Exception{
+        try{
+            return courseRepo.getCourses(course_name, grade);
+        } catch(Exception e){
+            throw new Exception("Error in getting teacher's details");
+        }
     }
 
 

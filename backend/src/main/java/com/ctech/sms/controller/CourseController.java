@@ -51,11 +51,11 @@ public class CourseController {
 
     @GetMapping("/getteachers")
     public ResponseEntity<?> getTeachersName(@RequestParam(required = true, name="course") String course_name,
-                                             @RequestParam(required = true, name="grade") String grade) throws Exception{
+                                             @RequestParam(required = true, name="grade") String grade){
         try{
-            return ResponseEntity.ok().body(courseService.getTeachersOfCourse(course_name, grade));
+            return ResponseEntity.ok().body(courseService.getCourses(course_name, grade));
         } catch(Exception e){
-            throw new Exception("Not found");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
