@@ -67,9 +67,15 @@ const StudentSearch = () => {
         setResponseData(response.data);
         setIsAvailable(true);
 
-      } else {
+      } else if (searchType == "name"){
+        const response = await axios.get(`http://localhost:8080/student/find?name=${searchvalue.current?.value}`);
+        setResponseData(response.data);
+        setIsAvailable(true);
+      }
+      else {
         setIsAvailable(false); //if the user selects the name option, the table will not be shown
       }
+
     } catch (error: any) {
       setIsAvailable(false);
       if (error.response) {
@@ -82,7 +88,7 @@ const StudentSearch = () => {
             onOpen();
         }
        
-        //if there is an error in the response it will show the message thrwon by the server
+        //if there is an error in the response it will show the message thrown by the server
       } else console.error(error.message); //if there is an error in the request it will show the error message
     }
   };
@@ -160,6 +166,7 @@ const StudentSearch = () => {
               <Th>Student ID</Th>
               <Th>Full Name</Th>
               <Th>NIC</Th>
+              <Th>Actions</Th>
             </Tr>
             
             </Thead>
@@ -170,7 +177,11 @@ const StudentSearch = () => {
                     <Td>{data.student_id}</Td>
                     <Td>{data.full_name}</Td>
                     <Td>{data.nic}</Td>
-                    <Td><Button onClick={()=>navigate(`/profile/${data.student_id}`)}>View</Button></Td>
+                    <Td><Button marginRight = "20px" onClick={()=>navigate(`/profile/${data.student_id}`)}>View Profile</Button>
+                    <Button onClick={()=>navigate(`/profile/${data.student_id}`)}>Register for a course</Button>
+                    </Td>
+                  
+
                   </Tr>
                 );
               })}
