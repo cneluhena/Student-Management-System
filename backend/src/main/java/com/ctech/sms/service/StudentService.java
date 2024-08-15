@@ -89,5 +89,17 @@ public class StudentService {
         }
     }
 
+    public List<Student> getStudentByName(String name) throws StudentNotFoundException{
+        String searchString = "%" + name + "%";  // for the like operator we have to add % mark for the beginning and end of a string
+        List<Student> optionalStudents = studentRepo.findByName(searchString);
+        if (!optionalStudents.isEmpty()){
+            return optionalStudents;
+        } else{
+            throw new StudentNotFoundException(String.format("Student with name %s not found", name));
+        }
+    }
+
+
+
 
 }

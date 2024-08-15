@@ -28,7 +28,6 @@ public class StudentController {
 
     }
 
-
     @PutMapping("/update")
     public ResponseEntity<String> updateStudent(@RequestParam Integer id, @RequestBody Student student){
         try{
@@ -41,14 +40,19 @@ public class StudentController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<?> getStudent (
+    public ResponseEntity<?> findStudent (
             @RequestParam(name="id", required = false) Integer Id,
-            @RequestParam(name="nic", required = false) String nic) {
+            @RequestParam(name="nic", required = false) String nic,
+            @RequestParam(name="name", required = false) String name) {
         try {
             if (Id != null)
-                return ResponseEntity.ok().body(studentService.getStudentById(Id));
+                return ResponseEntity.ok().body(studentService.getStudentById(Id));  //finding the student by studentId
+
             else if (nic != null)
-                return ResponseEntity.ok().body(studentService.getStudentByNic(nic));
+                return ResponseEntity.ok().body(studentService.getStudentByNic(nic)); //finding the student by nic
+
+            else if (name != null)
+                return ResponseEntity.ok().body(studentService.getStudentByName(name));
             else
                 throw new StudentNotFoundException("Student Not Found");
         } catch (StudentNotFoundException e) {

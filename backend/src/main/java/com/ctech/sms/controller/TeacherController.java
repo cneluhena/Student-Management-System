@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class TeacherController {
     private final TeacherService teacherService;
 
-
     @PostMapping("/add")
     public ResponseEntity<String> addStudent(@RequestBody Teacher teacher) throws TeacherAlreadyExist {
         try{
@@ -59,6 +58,8 @@ public class TeacherController {
         }
 
     }
+
+
 
 
 }

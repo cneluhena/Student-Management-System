@@ -24,9 +24,10 @@ public class EnrollmentService {
     //enrolling a new student to a course
     public void enrollStudent(Enrollment enrollment) throws Exception {
         try{
-            List<Enrollment> currentEnrolments = enrolmentRepo.isStudentEnrolled(enrollment.getStudentId(), enrollment.getCourseId());
 
             //check whether the student has already enrolled in the course
+            List<Enrollment> currentEnrolments = enrolmentRepo.isStudentEnrolled(enrollment.getStudentId(), enrollment.getCourseId());
+
             if (currentEnrolments.isEmpty()){
                 enrollment.setEnrolledDate(LocalDateTime.now());
                 enrolmentRepo.save(enrollment);

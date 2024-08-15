@@ -4,6 +4,8 @@ import com.ctech.sms.Errors.CourseNotFoundException;
 
 import com.ctech.sms.entity.Course;
 
+import com.ctech.sms.entity.CourseDTO;
+import com.ctech.sms.entity.TeacherDTO;
 import com.ctech.sms.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -72,6 +75,13 @@ public class CourseService {
         }
     }
 
+    public List<CourseDTO> getCourseByGrade(){
+        return courseRepo.getCoursesByGrade();
+    }
+
+    public List<TeacherDTO> getTeachersOfCourse(String course_name, String grade){
+        return courseRepo.getTeachersId(course_name, grade);
+    }
 
 
 }

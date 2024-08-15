@@ -23,7 +23,7 @@ public class CourseController {
             courseService.addCourse(course);
             return ResponseEntity.ok().body("Course successfully added");
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error occured when adding a course");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error occurred when adding a course");
         }
 
     }
@@ -38,6 +38,25 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<?>  getCourse() throws Exception{
+        try{
+            return ResponseEntity.ok().body(courseService.getCourseByGrade());
+        } catch(Exception e){
+            throw new Exception("not found");
+        }
+    }
+
+    @GetMapping("/getteachers")
+    public ResponseEntity<?> getTeachersName(@RequestParam(required = true, name="course") String course_name,
+                                             @RequestParam(required = true, name="grade") String grade) throws Exception{
+        try{
+            return ResponseEntity.ok().body(courseService.getTeachersOfCourse(course_name, grade));
+        } catch(Exception e){
+            throw new Exception("Not found");
+        }
     }
 
 

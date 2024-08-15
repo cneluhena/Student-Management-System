@@ -27,11 +27,10 @@ public class EnrollmentController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(se.getMessage());
         }
 
-
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> enrollStudent(@RequestParam Integer id){
+    public ResponseEntity<String> unEnrollStudent(@RequestParam Integer id){
         try{
             enrollmentService.unEnroll(id);
             return ResponseEntity.ok().body("Student unenrolled successfully");
