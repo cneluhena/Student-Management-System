@@ -1,12 +1,8 @@
 package com.ctech.sms.controller;
 
 
-import com.ctech.sms.Errors.CourseNotFoundException;
 import com.ctech.sms.Errors.PaymentNotFound;
-import com.ctech.sms.Errors.StudentNotFoundException;
-import com.ctech.sms.entity.Payment;
-import com.ctech.sms.entity.PaymentDTO;
-import com.ctech.sms.service.CourseService;
+import com.ctech.sms.dto.PaymentDTO;
 import com.ctech.sms.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

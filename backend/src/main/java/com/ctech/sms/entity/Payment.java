@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Table(name="payments")
 @Entity
 @AllArgsConstructor
@@ -28,6 +30,9 @@ public class Payment {
 
     @Column(name="payment_amount")
     private Float paymentAmount;
+
+    @Column(name="payment_date")
+    private LocalDateTime paymentDate;
 
 
 

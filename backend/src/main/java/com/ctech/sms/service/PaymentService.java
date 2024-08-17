@@ -5,17 +5,15 @@ import com.ctech.sms.Errors.PaymentNotFound;
 import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.entity.Course;
 import com.ctech.sms.entity.Payment;
-import com.ctech.sms.entity.PaymentDTO;
+import com.ctech.sms.dto.PaymentDTO;
 import com.ctech.sms.entity.Student;
-import com.ctech.sms.repository.CourseRepository;
 import com.ctech.sms.repository.PaymentRepository;
-import com.ctech.sms.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +34,7 @@ public class PaymentService {
                 payment.setCourse(course);
                 payment.setStudent(student.get(0));
                 payment.setPaymentAmount(amount);
+                payment.setPaymentDate(LocalDateTime.now());
                 paymentRepo.save(payment);
             }
 

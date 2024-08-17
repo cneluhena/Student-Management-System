@@ -1,8 +1,8 @@
 package com.ctech.sms.repository;
 
 import com.ctech.sms.entity.Course;
-import com.ctech.sms.entity.CourseDTO;
-import com.ctech.sms.entity.TeacherDTO;
+import com.ctech.sms.dto.CourseDTO;
+import com.ctech.sms.dto.TeacherDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

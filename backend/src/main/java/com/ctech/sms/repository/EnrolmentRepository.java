@@ -13,4 +13,7 @@ public interface EnrolmentRepository extends JpaRepository<Enrollment, Integer> 
             value= "Select * FROM enrollments WHERE (student_id=?1 AND course_id=?2)")
     List<Enrollment> isStudentEnrolled(Integer studentId, Integer courseId);
 
+
+    List<Enrollment> findAllByStudent_StudentId(Integer studentId);
+
 }

@@ -78,7 +78,6 @@ public class StudentService {
                 currentStudent.setGuardianPhoneNumber(student.getGuardianPhoneNumber());;
             }
 
-
             studentRepo.save(currentStudent);
             log.info("Student with id {} successfully update", studentId);
         }

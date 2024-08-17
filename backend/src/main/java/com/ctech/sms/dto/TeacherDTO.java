@@ -1,4 +1,4 @@
-package com.ctech.sms.entity;
+package com.ctech.sms.dto;
 
 import java.time.LocalTime;
 

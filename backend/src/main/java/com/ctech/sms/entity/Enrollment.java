@@ -17,13 +17,15 @@ public class Enrollment {
     @Id
     @Column(name="enrollment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer enrolmentId;
+    private Integer enrollmentId;
 
-    @Column(name="student_id")
-    private int studentId;
+    @ManyToOne
+    @JoinColumn(name="student_id", nullable = false)
+    private Student student;
 
-    @Column(name="course_id")
-    private Integer courseId;
+    @ManyToOne
+    @JoinColumn(name="course_id", nullable=false)
+    private Course course;
 
     @Column(name="enrolled_datetime")
     private LocalDateTime enrolledDate;
