@@ -79,6 +79,15 @@ public class CourseService {
         return courseRepo.getCoursesByGrade();
     }
 
+    public Course getCourseByID(Integer courseId) throws  CourseNotFoundException{
+        Optional<Course> course = courseRepo.findById(courseId);
+        if (course.isPresent()){
+            return course.get();
+        } else{
+            throw new CourseNotFoundException(String.format("Course with ID %d not found", courseId));
+        }
+    }
+
 
     public List<TeacherDTO> getCourses(String course_name, String grade) throws Exception{
         try{
