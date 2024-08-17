@@ -2,6 +2,7 @@ package com.ctech.sms.controller;
 
 
 import com.ctech.sms.Errors.CourseNotFoundException;
+import com.ctech.sms.Errors.PaymentNotFound;
 import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.entity.Payment;
 import com.ctech.sms.entity.PaymentDTO;
@@ -29,5 +30,16 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("/get")
+    public ResponseEntity<?> findPaymentById(@RequestParam(name="id") Integer paymentId){
+        try{
+            return ResponseEntity.ok().body(paymentService.findPaymentById(paymentId));
+        } catch(PaymentNotFound e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
 
 }

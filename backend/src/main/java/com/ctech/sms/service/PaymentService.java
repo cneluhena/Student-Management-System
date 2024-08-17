@@ -1,6 +1,7 @@
 package com.ctech.sms.service;
 
 import com.ctech.sms.Errors.CourseNotFoundException;
+import com.ctech.sms.Errors.PaymentNotFound;
 import com.ctech.sms.Errors.StudentNotFoundException;
 import com.ctech.sms.entity.Course;
 import com.ctech.sms.entity.Payment;
@@ -43,4 +44,17 @@ public class PaymentService {
         }
 
     }
+
+
+    //finding a payment by payment ID
+    public Payment findPaymentById(Integer paymentId) throws PaymentNotFound{
+        Payment payment = paymentRepo.findByPaymentId(paymentId);
+        if (payment != null){
+            return payment;
+
+        } else{
+            throw new PaymentNotFound(String.format("Payment with id %d not found", paymentId));
+        }
+    }
+
 }
