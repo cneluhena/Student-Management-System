@@ -1,7 +1,7 @@
 package com.ctech.sms.repository;
 
 import com.ctech.sms.entity.Course;
-import com.ctech.sms.dto.CourseDTO;
+import com.ctech.sms.dto.CourseDT;
 import com.ctech.sms.dto.TeacherDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +14,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course,Integer> {
 
     @Query(nativeQuery = true, value = "SELECT grade, array_agg(DISTINCT course_name) as subjects from courses GROUP BY grade")
-    List<CourseDTO> getCoursesByGrade();
+    List<CourseDT> getCoursesByGrade();
 
     @Query(nativeQuery=true, value = "SELECT c.*, t.full_name from courses c Left Join teachers t ON c.teacher_id = t.teacher_id where course_name =?1 and grade=?2")
     List<TeacherDTO> getCourses(String course_name, String grade);

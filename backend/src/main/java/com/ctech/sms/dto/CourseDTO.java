@@ -1,14 +1,18 @@
 package com.ctech.sms.dto;
 
+
 import lombok.Data;
-import lombok.Getter;
 
-import java.util.List;
-
-
-public interface CourseDTO {
-        String getGrade();
-        List<String> getSubjects();
+import java.time.LocalTime;
 
 
+@Data
+public class CourseDTO {
+    private String courseName;
+    private String grade;
+    private Integer teacherId;
+    private String medium;
+    private String day;
+    private LocalTime startTime;
+    private LocalTime endTime;
 }

@@ -2,6 +2,7 @@ package com.ctech.sms.controller;
 
 import com.ctech.sms.Errors.CourseNotFoundException;
 
+import com.ctech.sms.dto.CourseDTO;
 import com.ctech.sms.entity.Course;
 
 import com.ctech.sms.service.CourseService;
@@ -18,9 +19,9 @@ public class CourseController {
     private final CourseService courseService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addCourse(@RequestBody Course course){
+    public ResponseEntity<String> addCourse(@RequestBody CourseDTO courseDTO ){
         try{
-            courseService.addCourse(course);
+            courseService.addCourse(courseDTO);
             return ResponseEntity.ok().body("Course successfully added");
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error occurred when adding a course");
@@ -30,11 +31,11 @@ public class CourseController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateCourse(@RequestParam Integer id, @RequestBody Course course){
+    public ResponseEntity<String> updateCourse(@RequestParam Integer id, @RequestBody CourseDTO courseDTO){
         try{
-            courseService.updateCourse(id, course);
+            courseService.updateCourse(id, courseDTO);
             return ResponseEntity.ok().body(String.format("course %d is updated", id));
-        } catch (CourseNotFoundException e){
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 

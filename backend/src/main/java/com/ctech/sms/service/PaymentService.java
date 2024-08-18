@@ -22,7 +22,7 @@ public class PaymentService {
     private final StudentService studentService;
     private final CourseService courseService;
     private final PaymentRepository paymentRepo;
-    public void doPayment(PaymentDTO paymentDTO) throws StudentNotFoundException, CourseNotFoundException {
+    public void doPayment(PaymentDTO paymentDTO) throws Exception {
 
         try{
             List<Student> student = studentService.getStudentById(paymentDTO.getStudentId());
@@ -36,10 +36,12 @@ public class PaymentService {
                 payment.setPaymentAmount(amount);
                 payment.setPaymentDate(LocalDateTime.now());
                 paymentRepo.save(payment);
+            } else{
+                throw new Exception("Amount cannot be empty");
             }
 
-        } catch(StudentNotFoundException | CourseNotFoundException e){
-            throw e;
+        } catch(Exception e){
+            throw new Exception(e.getMessage());
         }
 
     }
