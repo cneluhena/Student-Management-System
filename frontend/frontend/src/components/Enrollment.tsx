@@ -163,7 +163,9 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
         const studentId = getValues("student_id")
         axios.get(`http://localhost:8080/student/find?id=${studentId}`).
         then(response=>{
+          setNotFoundWarning(false);
           setCheck(true);
+          
         }).catch(error=>setNotFoundWarning(true));
 
     }
