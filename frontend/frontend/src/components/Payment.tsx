@@ -45,11 +45,7 @@ import {
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
   
   const PaymentForm = () => {
-    interface Subject {
-      grade: string,
-      subjects: string[]
-      
-    }
+    
 
     interface Student{
         student_id: number,
@@ -84,15 +80,6 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
     }
 
     const [enrollmentData, setEnrollmentData] = useState<Enrollment[]>();
-    const [selectedGrade, setSelectedGrade] = useState('');
-    const [subjectData, setSubjectData] = useState([]);
-    const [currentGradeData, setCurrentGradeData] = useState<Subject|undefined>(undefined)
-    const [selectedSubject, setSelectedSubject] = useState('');
-    const [teachers, setTeachers] = useState<string[]|undefined>(undefined);
-    const [courses, setCourses] = useState<Course[]|undefined>(undefined);
-    const [selectedTeacher, setSelectedTeacher] = useState('');
-    const [selectedMedium, setSelectedMedium] = useState('');
-    const [selectedCourseId, setSelectedCourseId] = useState('');
     const [currentCourseId, setCurrentCourseId] = useState<number>();
     const [notFoundWarning, setNotFoundWarning] = useState<Boolean>();
     const [check, setCheck] = useState<Boolean>(false);
@@ -101,10 +88,17 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
     const [feedbackMessage, setFeedbackMessage] = useState('');
     const [showSuccessmessage, setShowSuccessmessage] = useState(false);
     const [courseFee, setCourseFee] = useState('');
+    const [currCourseName, setCurrCourseName] = useState('');
+    const [grade, setGrade] = useState('');
+    const [teacher, setTeacher] = useState('');
+    const [classTime, setClassTime] = useState('');
+    const [isPayClicked, setIsPayClicked] = useState(false);
+    const[confirmLoading, setConfirmLoading] = useState(false);
+    const [isPayConfirmClicked, setIsPayConfirmClicked] = useState(false);
+    const [studName, setStudName] = useState('');
+    
 
 
-
-    const grades = ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4','Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'A/L']
     const { isOpen, onOpen, onClose } = useDisclosure();
 
 
@@ -116,81 +110,19 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
       formState: { errors }
     } = useForm();
   
-    // const handleValidate = async () => {
-    //   const isValid = await trigger();
-    //   if (isValid) {
-    //     handleSubmit(onSubmit)();
-    //   }
-    // };
-  
-    const onSubmit = async (data: FieldValues) => {
-      try{
-        const enrolllmentData = {
-            "student_id": getValues("student_id"),
-            "course_id": selectedCourseId
-        }
-          setLoading(true);
-          await axios.post("http://localhost:8080/enrollment/add", enrolllmentData);
-          setLoading(false);
-          setIsSuccessful(true);
-          setShowSuccessmessage(true);
-  
-      } catch(error){
-        if (axios.isAxiosError(error)){
-          setFeedbackMessage(error.response?.data);
-        } else{
-          setFeedbackMessage("An error occures when regisering. Try Again!")
-        }
-        setLoading(false);
-        setIsSuccessful(false);
-        setShowSuccessmessage(true);
-        
-      }
-      
-    };
-
-  
-    //handle the the change in grade selecting
-    const handleChange = (event:ChangeEvent<HTMLSelectElement>)=>{
-        const grade = event.target.value;
-        setSelectedGrade(event.target.value);  //selected grade
-        setSelectedSubject('');
-        const data = subjectData.find((item:Subject)=>item.grade == grade);
-        setCurrentGradeData(data);
-        setSelectedTeacher('');
-        setSelectedMedium('');
-        setTeachers([]);
-
-      
-    }
-
-
-    //operations that must be done after seelcting medium
-    const handleMediumChange = (event:ChangeEvent<HTMLSelectElement>)=>{
-      setSelectedMedium(event.target.value);
-      setTeachers([...new Set(courses?.filter(course=>course.medium === event.target.value).map(course=>course.full_name))]);
-    }
-
-    //handling the change of the subject select element
-    const handleSubjectChange = (event:ChangeEvent<HTMLSelectElement>)=>{
-      const subject = event.target.value;
-      setSelectedSubject(event.target.value);
-      if (selectedGrade != ''){
-        axios.get(`http://localhost:8080/course/getteachers?course=${subject}&grade=${selectedGrade}`).
-        then(response=>setCourses(response.data)).
-        catch(error=>console.error(error));
-      }
-    }
+   
 
     const checkAvailability = async ()=>{
         const studentId = getValues("student_id");
         setLoading(true);
         try{
           const response = await axios.get(`http://localhost:8080/enrollment/getStudent?id=${studentId}`);
-          const enrollmentData:Enrollment = response.data
+          
           setLoading(false);
           setCheck(true);
           setEnrollmentData(response.data);
+          setStudName(response.data[0].student.full_name);
+          console.log(response.data);
           setNotFoundWarning(false);
         } catch(error){
           console.log(error);
@@ -208,14 +140,19 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
     }
 
-    const handlePayClick = async (course_id: number)=>{
+    const handlePayClick = async (enrollment:Enrollment)=>{
       try{
 
-          const response = await axios.get(`http://localhost:8080/coursefee/get?id=${course_id}`);
+          const response = await axios.get(`http://localhost:8080/coursefee/get?id=${enrollment.course.course_id}`);
           console.log(response.data);
           setCourseFee(response.data.coursefee);
-          setCurrentCourseId(course_id);
-        
+          setCurrCourseName(enrollment.course.course_name);
+          setCurrentCourseId(enrollment.course.course_id);
+          setGrade(enrollment.course.grade);
+          setTeacher(enrollment.course.teacher.full_name);
+          setClassTime(enrollment.course.start_time + '-' + enrollment.course.end_time)
+          setIsPayClicked(true);
+          
 
       } catch(error){
         console.log(error);
@@ -224,7 +161,11 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
     const handleModalClose = ()=>{
       setShowSuccessmessage(false);
+      setIsSuccessful(false);
       onClose();
+      setIsPayClicked(false);
+      setIsPayConfirmClicked(false);
+     
     }
 
 
@@ -232,13 +173,23 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
       try{
         const studentId = getValues("student_id");
         const courseId = currentCourseId;
-        await axios.post(`http://localhost:8080/payments/pay`, {
-          "student_id": studentId,
-          "course_id": courseId,
-          "amount": courseFee
-        })
-        console.log(studentId, courseId, courseFee);
+        setConfirmLoading(true);
+        setIsPayClicked(false);
+        setIsPayConfirmClicked(true);
+     
+          await axios.post(`http://localhost:8080/payments/pay`, {
+            "student_id": studentId,
+            "course_id": courseId,
+            "amount": courseFee
+          })
+          setConfirmLoading(false)
+          
+          setShowSuccessmessage(true);
+          setIsSuccessful(true);
+   
+        
       } catch(error){
+        setLoading(false);
         console.log(error);
       }
      
@@ -248,7 +199,7 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
    
     return (
       <Center>
-           <form onSubmit={handleSubmit(onSubmit)}>
+           <form>
           <Center>
             <Heading marginBottom="20px">Payment Form</Heading>
           </Center>
@@ -275,6 +226,11 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
           <Spinner size="lg" />
         </Box>
         )}
+        {check && <>
+          <Box fontSize='lg' margin={15}>
+            <b>Student Name:</b> <Text as="span" marginLeft={2}>{studName}</Text>
+          </Box>
+        </>}
           {
             check && <TableContainer>
             <Table variant='simple'>
@@ -299,7 +255,9 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
                       <Td>{enrollment.course.medium}</Td>
                       <Td>{enrollment.course.day}</Td>
                       <Td>{enrollment.course.start_time}-{enrollment.course.end_time}</Td>
-                      <Td><Button onClick={async ()=>{await handlePayClick(enrollment.course.course_id); onOpen();}}>Pay</Button></Td>
+                      <Td><Button onClick={async ()=>{
+                        await handlePayClick(enrollment);
+                         onOpen();}}>Pay</Button></Td>
 
                   </Tr>
                   ))
@@ -310,72 +268,7 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
             </Table>
           </TableContainer>
           }
-          <FormControl w="60vw">
-            <FormLabel>Course</FormLabel>
-            <Select placeholder='Select Course' marginBottom="15px" value={selectedCourseId} onChange={handleChange} isRequired>
-              {enrollmentData?.map((enrollment, index)=>(
-                <option key={index} value={enrollment.course.course_id}>{}</option>
-              ))}
-            </Select>
-          </FormControl>
-  
-          <FormControl w="60vw" >
-          <FormLabel>Subject</FormLabel>
-          <Select placeholder='Select Subject' isDisabled={selectedGrade ==''} value={selectedSubject} onChange={handleSubjectChange} marginBottom="15px" isRequired>
-            {
-              currentGradeData?.subjects.map((subject, index)=>(
-                <option key={index}>{subject}</option>
-              ))
-            }
-              
-            </Select>
-          </FormControl>
           
-
-
-          <FormControl w="60vw" >
-
-    
-          <FormLabel>Medium</FormLabel>
-        
-          <Select placeholder='Select Medium' isDisabled={selectedSubject ==''} value={selectedMedium} onChange={handleMediumChange} marginBottom="15px" isRequired>
-            
-            {
-              [...new Set(courses?.map((course)=>course.medium))].map((medium)=>(
-                <option key={medium}>{medium}</option>
-              ))
-            }
-              
-            </Select>
-          </FormControl>
-          
-          <FormControl w="60vw" >
-
-          <FormLabel>Teacher</FormLabel>
-          <Select placeholder='Select Teacher' isDisabled={selectedMedium==''} value={selectedTeacher} onChange={(event)=>{setSelectedTeacher(event.target.value)}} marginBottom="15px" isRequired>
-          {
-              teachers?.map(teacher=>(
-                  <option value={teacher}>{teacher}</option>
-              ))
-            }
-            </Select>
-            </FormControl>
-
-            <FormControl w="60vw" >
-
-          <FormLabel>Day and Time</FormLabel>
-          <Select placeholder='Select Date and Time' isDisabled={selectedTeacher==''} value={selectedCourseId} onChange={(event)=>{setSelectedCourseId(event.target.value);console.log(event.target.value)}} marginBottom="15px" isRequired>
-          { courses?.filter(course=> 
-          course.grade === selectedGrade &&
-          course.course_name === selectedSubject &&
-          course.medium === selectedMedium && 
-          course.full_name == selectedTeacher
-          ).map(course=>(
-            <option value={course.course_id}>{`${course.day} ${course.start_time}-${course.end_time}`}</option>
-          ))
-            }
-            </Select>
-            </FormControl>
 
           <Flex marginBottom='20px'>
           {/* <Container paddingLeft="0px">
@@ -396,26 +289,86 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
         
   
           <Center>
-            <Button isDisabled={check==false} onClick={onOpen} colorScheme="blue" type='submit' >
-              Add Student
-            </Button>
-            
+          
           </Center>
           <Modal isCentered blockScrollOnMount={false} isOpen={isOpen} onClose={handleModalClose}>
         <ModalOverlay />
         <ModalContent>
+        {confirmLoading && (
           <ModalBody paddingTop={8}>
-          <FormLabel>Course Fee</FormLabel>
+              <Box textAlign="center">
+              <Spinner size="lg" />
+            </Box>
+            </ModalBody>
+            )}
+          { 
+          isPayClicked && 
+          <ModalBody paddingTop={8}>
+            
+          <FormLabel>Course</FormLabel>
+            <Input
+            isReadOnly
+            value={currCourseName}
+          />
+           <FormLabel>Course Fee</FormLabel>
             <Input
             isReadOnly
             value={courseFee}
           />
+           <FormLabel>Grade</FormLabel>
+            <Input
+            isReadOnly
+            value={grade}
+          />
+           <FormLabel>Teacher</FormLabel>
+            <Input
+            isReadOnly
+            value={teacher}
+          />
+          <FormLabel>Class Time</FormLabel>
+            <Input
+            isReadOnly
+            value={classTime}
+          />
           </ModalBody>
+  }
+  
+    {
+      
+      isSuccessful && showSuccessmessage && (
+        <ModalBody paddingTop={8}>
+        <Alert
+          status='success'
+          variant='subtle'
+          flexDirection='column'
+          alignItems='center'
+          justifyContent='center'
+          textAlign='center'
+          height='200px'
+        >
+          <AlertIcon boxSize='40px' mr={0} />
+          <AlertTitle mt={4} mb={1} fontSize='lg'>
+            Payment Successful
+          </AlertTitle>
+          
+        </Alert>
+        </ModalBody>
+      )
+    }
+  
 
           <ModalFooter>
+            {!isPayConfirmClicked &&
           <Button size='sm' colorScheme='blue' onClick={async()=>{handlePayConfirm();}} marginRight={15}>Confirm Payment</Button>
-            { !loading && 
-            <Button size='sm' colorScheme='blue' mr={3} onClick={()=>{setCurrentCourseId(undefined);onClose()}}>
+            }
+            { !confirmLoading && 
+            <Button size='sm' colorScheme='blue' mr={3} onClick={()=>{
+              setCurrentCourseId(undefined)
+              setCurrCourseName('');
+              setGrade('');
+              setTeacher('');
+              setClassTime('');
+              ;handleModalClose()}}>
               Close
             </Button>
             
